@@ -1,1 +1,1 @@
-mpirun -np 8 ./main
+mpirun -np 8 ./main input.txt

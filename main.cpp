@@ -45,7 +45,15 @@ int main(int argc, char* argv[]) {
   int chunk_size;
 
   if (rank == 0) {
-    std::ifstream input_file("input2.txt", std::ios::ate);
+    if (argc < 2) {
+      std::cerr << "Usage: " << argv[0] << " <input_file>" << std::endl;
+      MPI_Abort(MPI_COMM_WORLD, 1);
+    }
+    std::ifstream input_file(argv[1], std::ios::ate);
+    if (!input_file.is_open()) {
+      std::cerr << "Error: Could not open file " << argv[1] << std::endl;
+      MPI_Abort(MPI_COMM_WORLD, 1);
+    }
     const auto input_file_size = input_file.tellg();
     input_file.seekg(0, std::ios::beg);
     buffer.resize(input_file_size);
